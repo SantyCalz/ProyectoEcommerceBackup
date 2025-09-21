@@ -1,0 +1,73 @@
+{% extends 'productos/base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/pago_aprobado.css' %}">
+
+<!-- Card principal -->
+<div class="pago-card">
+    <h1>Pago Aprobado</h1>
+
+    <p>Una vez que confirmes tu pago, se generará tu pedido, se descontará el stock y podrás descargar el PDF.</p>
+
+    <button id="confirmar-pago-btn">Confirmar Pago y Generar Pedido</button>
+
+    <p id="mensaje"></p>
+
+    <a id="link-pdf" href="#" target="_blank" style="display:none;">📄 Descargar PDF del pedido</a>
+</div>
+
+<!-- Link fuera de la card -->
+<a class="volver-tienda" href="{% url 'lista_productos' %}">Volver a la tienda</a>
+
+<script>
+// Función para obtener CSRF token desde la cookie
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+const csrftoken = getCookie('csrftoken');
+const btn = document.getElementById('confirmar-pago-btn');
+const mensaje = document.getElementById('mensaje');
+const linkPDF = document.getElementById('link-pdf');
+
+btn.addEventListener('click', async function() {
+    mensaje.textContent = "Procesando...";
+    try {
+        const response = await fetch("{% url 'pago_aprobado' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'ok') {
+            mensaje.textContent = "✅ Pedido generado correctamente. Gracias por tu compra.";
+            if (data.pdf_url) {
+                linkPDF.href = data.pdf_url;
+                linkPDF.style.display = 'inline-block';
+            }
+        } else {
+            mensaje.textContent = "❌ " + data.message;
+        }
+    } catch (err) {
+        console.error("Error en fetch:", err);
+        mensaje.textContent = "❌ Ocurrió un error inesperado. Intenta nuevamente.";
+    }
+});
+</script>
+
+{% endblock %}

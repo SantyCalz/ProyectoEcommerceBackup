@@ -1,0 +1,73 @@
+{% extends 'productos/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="lista-container">
+    <h1>Productos</h1>
+
+    <form method="get" class="filtros">
+        <input type="text" name="q" placeholder="Buscar producto..." value="{{ request.GET.q|default:'' }}">
+        <select name="categoria">
+            <option value="">Todas las categorías</option>
+            {% for cat in categorias %}
+                <option value="{{ cat.id }}" {% if request.GET.categoria == cat.id|stringformat:"s" %}selected{% endif %}>
+                    {{ cat.nombre }}
+                </option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+    </form>
+
+    <div class="productos-grid">
+        {% for producto in productos %}
+            <div class="producto-card">
+                {% if producto.descuento > 0 %}
+                    <div class="badge-ahorro">Ahorrás ${{ producto.ahorro|floatformat:0 }}</div>
+                {% endif %}
+
+                <a href="{% url 'detalle_producto' producto.id %}">
+                    {% if producto.imagen %}
+                        <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
+                    {% else %}
+                        <img src="https://via.placeholder.com/150" alt="Sin imagen">
+                    {% endif %}
+                </a>
+
+                <h3>
+                    <a href="{% url 'detalle_producto' producto.id %}">{{ producto.nombre }}</a>
+                </h3>
+
+                {% if producto.stock > 0 and producto.stock < 10 %}
+                    <span class="stock-bajo" style="display:block; margin-bottom:0.5rem; color:#d97706;">
+                        Quedan {{ producto.stock }} en stock
+                    </span>
+                {% endif %}
+
+                <div class="precio-carrito">
+                    <div class="precios">
+                        {% if producto.descuento > 0 %}
+                            <span class="precio-original">${{ producto.precio }}</span>
+                            <span class="precio-descuento">${{ producto.precio_con_descuento|floatformat:2 }}</span>
+                        {% else %}
+                            <span class="precio-descuento">${{ producto.precio }}</span>
+                        {% endif %}
+                    </div>
+
+                    {% if producto.stock == 0 %}
+                        <a class="btn-carrito disabled"><i class="fa-solid fa-cart-shopping"></i></a>
+                    {% else %}
+                        <a class="btn-carrito" href="{% url 'agregar_al_carrito' producto.id %}">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <p>No hay productos disponibles.</p>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}
+

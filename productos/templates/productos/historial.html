@@ -1,0 +1,23 @@
+{% extends 'productos/base.html' %}
+{% block content %}
+<h1>Historial de pedidos</h1>
+
+{% if pedidos %}
+    <ul>
+    {% for pedido in pedidos %}
+        <li>
+            Pedido #{{ pedido.id }} - {{ pedido.fecha|date:"d/m/Y H:i" }} - Total: ${{ pedido.total }} - Dirección: {{ pedido.direccion_envio }}
+            <ul>
+                {% for item in pedido.pedidoproducto_set.all %}
+                    <li>{{ item.producto.nombre }} x {{ item.cantidad }} = ${{ item.subtotal }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No tienes pedidos aún.</p>
+{% endif %}
+
+<a href="{% url 'lista_productos' %}">Volver a la tienda</a>
+{% endblock %}

@@ -1,0 +1,124 @@
+/* === Contenedor general === */
+.editar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    background: #f5f7fa;
+    padding: 5rem 1rem 2rem 1rem;
+    gap: 2rem;
+}
+
+/* === Contenedor de las cards lado a lado === */
+.cards-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 2rem; /* espacio entre las cards */
+    width: 100%;
+    max-width: 1200px;
+    flex-wrap: nowrap; /* no apilar por defecto */
+}
+
+/* === Card === */
+.editar-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    flex: 1; /* cada card ocupa igual espacio */
+    min-width: 300px; /* para que no se achiquen demasiado */
+    box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+    animation: fadeIn 0.6s ease forwards;
+    text-align: center;
+}
+
+/* === Título de cada card === */
+.editar-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #333;
+    text-align: center;
+}
+
+/* === Formulario dentro de las cards === */
+.editar-form {
+    display: flex;
+    flex-direction: column; /* todos los inputs en columna */
+    align-items: center;
+    gap: 1.5rem; /* separación entre campos */
+}
+
+.editar-form .form-group {
+    display: flex;
+    flex-direction: column; /* inputs uno encima del otro */
+    width: 100%;
+    align-items: center;
+    gap: 1rem;
+}
+
+.editar-form input {
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    width: 90%;
+    max-width: 300px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.editar-form input:focus {
+    border-color: #0077cc;
+    box-shadow: 0 0 6px rgba(0,119,204,0.3);
+}
+
+/* === Botones fuera de las cards === */
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 2rem; /* espacio entre botones */
+    margin-top: 2rem; /* separación de las cards */
+}
+
+.btn-editar, .btn-cancel {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-editar {
+    background: #0ea5e9;
+    color: #fff;
+}
+
+.btn-editar:hover {
+    background: #10638a;
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.btn-cancel {
+    background: #ccc;
+    color: #333;
+}
+
+.btn-cancel:hover {
+    background: #aaa;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+/* === Animación === */
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* === Responsive: apilar cards en móvil === */
+@media (max-width: 1000px) {
+    .cards-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+}

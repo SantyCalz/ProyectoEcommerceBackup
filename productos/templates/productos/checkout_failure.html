@@ -1,0 +1,7 @@
+{% extends 'productos/base.html' %}
+
+{% block content %}
+<h1>❌ Error en el pago</h1>
+<p>Hubo un problema al procesar tu pago. Intentá nuevamente.</p>
+<a href="{% url 'ver_carrito' %}">Volver al carrito</a>
+{% endblock %}

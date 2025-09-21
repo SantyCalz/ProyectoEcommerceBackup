@@ -1,0 +1,435 @@
+/* ================= FONT MODERNA ================= */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f2f5;
+    color: #002035;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #002035;
+}
+
+a {
+    color: #00affe;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #008fcc;
+}
+
+/* ================= NAVBAR ================= */
+.navbar {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #008fcc;
+    padding: 1.2rem 2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Logo centrado */
+.navbar-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateY(20px);
+    height: 150px;
+    width: auto;
+    z-index: 10;
+    animation: logoDrop 0.6s ease-out forwards;
+}
+
+@keyframes logoDrop {
+    0% { transform: translate(-50%, -100%) scale(0.5); opacity: 0; }
+    100% { transform: translate(-50%, -50%) translateY(20px) scale(1); opacity: 1; }
+}
+
+/* Contenedores de los lados */
+.navbar-left,
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    z-index: 20;
+}
+
+.navbar-left .nav-link {
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.navbar-left .nav-link:hover {
+    color: #00affe;
+    animation: bounce 0.5s;
+}
+
+.navbar-right .icon-link i {
+    font-size: 1.4rem;
+    color: #ffffff;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.navbar-right .icon-link:hover i {
+    color: #00affe;
+    animation: bounce 0.5s;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-8px); }
+    60% { transform: translateY(-4px); }
+}
+
+/* Responsive Navbar */
+@media (max-width: 600px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+        gap: 1rem;
+    }
+    .navbar-links {
+        width: 100%;
+        justify-content: space-around;
+    }
+}
+
+/* ================= CONTENEDOR GIGANTE ================= */
+.lista-container {
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 2rem 3rem;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(0, 32, 53, 0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s forwards;
+}
+
+/* ================= FILTROS ================= */
+.filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.filtros input,
+.filtros select {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.7rem 1rem;
+    border: 1px solid rgba(0, 32, 53, 0.2);
+    border-radius: 10px;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.filtros input:focus,
+.filtros select:focus {
+    border-color: #00affe;
+    box-shadow: 0 0 8px rgba(0, 175, 254, 0.3);
+}
+
+.filtros button {
+    background-color: #0ea5e9;
+    color: #fff;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.filtros button:hover {
+    background-color: #10638a;
+    animation: bounce 0.5s;
+}
+
+/* ================= ANIMACIONES ================= */
+@keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ================= GRID DE PRODUCTOS ================= */
+.productos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s forwards;
+    animation-delay: 0.2s;
+
+    /* filas iguales según la card más alta */
+    grid-auto-rows: 1fr;
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+    .productos-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+/* Móvil */
+@media (max-width: 600px) {
+    .productos-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+}
+
+/* ================= CARD DE PRODUCTO ================= */
+.producto-card,
+.similar-card {
+    background: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+    padding: 1.5rem;
+    text-align: left;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* precio + carrito siempre abajo */
+    min-height: 450px; /* altura mínima uniforme */
+
+    position: relative;
+}
+
+.producto-card:hover,
+.similar-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 175, 254, 0.25);
+}
+
+.producto-card img,
+.similar-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+    background: #ffffff;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    
+}
+
+.producto-card h3,
+.similar-card h3 {
+    font-size: 1.2rem;
+    color: #002035;
+    margin-bottom: 5rem; /* espacio entre título y mensaje/stock */
+    min-height: 2rem; /* asegura espacio aunque título sea corto */
+}
+
+.producto-card h3 a,
+.similar-card h3 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.producto-card h3 a:hover,
+.similar-card h3 a:hover {
+    color: #00affe;
+}
+
+/* Contenedor de precio + carrito */
+.precio-carrito {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.precios {
+    display: flex;
+    flex-direction: column;
+}
+
+.precio-original {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 0.2rem;
+}
+
+.precio-descuento {
+    color: #00affe;
+    font-weight: bold;
+    font-size: 1.6rem;
+}
+
+/* Botón carrito */
+.btn-carrito {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0ea5e9;
+    color: #fff;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    margin-top: auto; /* empuja botón al fondo */
+}
+
+.btn-carrito:hover {
+    background-color: #10638a;
+    transform: translateY(-2px);
+    animation: bounce 0.5s;
+}
+
+.btn-carrito.disabled,
+.btn-carrito[disabled] {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    color: #666666;
+}
+
+/* Badges */
+.badge-ahorro {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #2ecc71;
+    color: #fff;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+}
+
+.badge.bg-danger {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #e74c3c;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Mensaje de stock bajo */
+.stock-bajo {
+    display: block;
+    margin-bottom: 1rem; /* espacio debajo del mensaje */
+    color: #d97706;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: center;
+    background-color: #fff7ed;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+
+/* ================= FOOTER NAVBAR ================= */
+.footer-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #008fcc; /* mismo color que la navbar */
+    padding: 1rem 2rem;
+    color: #fff;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+    flex-wrap: wrap;
+    gap: 1rem;
+    
+}
+
+.footer-left .footer-logo img {
+    height: 100px;
+    width: auto;
+}
+
+.footer-center {
+    flex: 1 1 500px;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.footer-center p {
+    margin: 0;
+    line-height: 1.4rem;
+}
+
+.footer-right .btn-github {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background-color: #333;
+    color: #fff;
+    padding: 0.7rem 1.5rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer-right .btn-github i {
+    font-size: 1.2rem;
+}
+
+.footer-right .btn-github:hover {
+    background-color: #555;
+    transform: translateY(-2px);
+    animation: bounce 0.5s;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .footer-navbar {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-center {
+        order: 2;
+    }
+
+    .footer-right {
+        order: 3;
+    }
+}
+
+/* ======== Layout general para footer pegado abajo ======== */
+html, body {
+    height: 100%; /* ocupa toda la pantalla */
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* asegura altura mínima de viewport */
+}
+
+main {
+    flex: 1; /* ocupa el espacio sobrante */
+    padding: 2rem; /* opcional, para que no quede pegado */
+}

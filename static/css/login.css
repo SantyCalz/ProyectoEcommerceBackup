@@ -1,0 +1,97 @@
+/* === Contenedor === */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background: #f5f7fa;
+    padding: 1rem;
+}
+
+/* === Card === */
+.login-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+    text-align: center;
+    animation: fadeIn 0.6s ease forwards;
+}
+
+/* === Título === */
+.login-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+/* === Formulario === */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: left;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 0.5rem 0.8rem; /* más pequeño para centrar texto */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.95rem; /* texto más pequeño */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: #0077cc;
+    box-shadow: 0 0 6px rgba(0,119,204,0.3);
+}
+
+/* === Botón === */
+.btn-login {
+    background: #0077cc;
+    color: #fff;
+    font-size: 1rem;
+    padding: 0.7rem 0.8rem; /* más compacto */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-login:hover {
+    background: #005fa3;
+    transform: scale(1.05); /* efecto sutil al pasar el mouse */
+}
+
+/* === Footer === */
+.login-footer {
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    color: #555;
+    text-align: center;
+}
+
+.login-footer a {
+    color: #0077cc;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}
+
+/* === Animación === */
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}

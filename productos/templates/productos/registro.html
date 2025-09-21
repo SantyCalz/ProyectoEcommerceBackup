@@ -1,0 +1,47 @@
+{% extends 'productos/base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="register-container">
+    <div class="register-card">
+        <h2 class="register-title">Registro</h2>
+        <form method="post" class="register-form">
+            {% csrf_token %}
+            <div class="form-grid">
+                <div class="form-group">
+                    {{ form.first_name.label_tag }}
+                    {{ form.first_name }}
+                </div>
+                <div class="form-group">
+                    {{ form.last_name.label_tag }}
+                    {{ form.last_name }}
+                </div>
+                <div class="form-group full-width">
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                </div>
+                <div class="form-group">
+                    {{ form.username.label_tag }}
+                    {{ form.username }}
+                </div>
+                <div class="form-group">
+                    {{ form.password1.label_tag }}
+                    {{ form.password1 }}
+                </div>
+                <div class="form-group full-width">
+                    {{ form.password2.label_tag }}
+                    {{ form.password2 }}
+                </div>
+            </div>
+            <button type="submit" class="btn-register">Registrarse</button>
+        </form>
+        <p class="register-footer">
+            ¿Ya tenés cuenta? <a href="{% url 'login_usuario' %}">Iniciar sesión</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
