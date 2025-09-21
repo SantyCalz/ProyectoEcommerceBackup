@@ -1,4 +1,4 @@
-/* Contenedor principal */
+/* ================= CONTENEDOR PRINCIPAL ================= */
 .detalle-producto {
     max-width: 1200px;
     margin: 4em auto;
@@ -10,14 +10,14 @@
     box-shadow: 0 8px 32px rgba(0,0,0,0.07);
 }
 
-/* Fila principal */
+/* ================= FILA PRINCIPAL ================= */
 .producto-row {
     display: flex;
     gap: 2rem;
     flex-wrap: wrap;
 }
 
-/* Galería */
+/* ================= GALERÍA DE IMÁGENES ================= */
 .galeria {
     flex: 1;
     display: flex;
@@ -25,6 +25,7 @@
     align-items: center;
 }
 
+/* Imagen principal cuadrada */
 .imagen-principal {
     width: 100%;
     max-width: 550px;
@@ -60,7 +61,7 @@
     transform: scale(1.05);
 }
 
-/* Información del producto */
+/* ================= INFORMACIÓN DEL PRODUCTO ================= */
 .info-producto {
     flex: 1;
     display: flex;
@@ -87,11 +88,13 @@
     align-self: flex-start;
 }
 
+/* Hover botón agregar */
 .btn-agregar:hover:not(.disabled) {
     background-color: #10638a;
     color: #fff;
 }
 
+/* Botón deshabilitado */
 .btn-agregar.disabled {
     background-color: #9ca3af;
     cursor: not-allowed;
@@ -105,7 +108,7 @@ h1 {
     color: #111;
 }
 
-/* Precio */
+/* ================= PRECIO ================= */
 .precio-section {
     display: flex;
     flex-direction: column;
@@ -125,6 +128,7 @@ h1 {
     color: #002035;
 }
 
+/* Badge de descuento */
 .badge-descuento {
     background-color: #0284c7;
     color: #fff;
@@ -141,7 +145,7 @@ h1 {
     white-space: nowrap;
 }
 
-/* Beneficios */
+/* ================= BENEFICIOS ================= */
 .icono-beneficio {
     width: 28px;
     height: 28px;
@@ -161,11 +165,12 @@ h1 {
     line-height: 1.3;
 }
 
+/* Colores de stock */
 .text-stock { color: #002035; }
 .text-warning { color: #d97706; }
 .text-danger { color: #dc2626; }
 
-/* Descripción */
+/* ================= DESCRIPCIÓN ================= */
 .descripcion {
     background-color: #f8fafc;
     border-radius: 12px;
@@ -177,7 +182,7 @@ h1 {
     margin-top: 2rem;
 }
 
-/* Responsive */
+/* ================= RESPONSIVE ================= */
 @media (max-width: 992px) {
     .producto-row {
         flex-direction: column;
@@ -190,6 +195,8 @@ h1 {
     .imagen-principal { max-width: 100%; height: 300px; }
     .miniaturas img { width: 60px; height: 60px; }
 }
+
+/* ================= PRODUCTOS SIMILARES ================= */
 .similares-container {
     max-width: 1200px;
     margin: 3rem auto;
@@ -232,11 +239,13 @@ h1 {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Hover tarjeta similar */
 .similar-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0, 175, 254, 0.25);
 }
 
+/* Imagen y título en tarjetas similares */
 .similar-card img {
     width: 100%;
     height: 180px;
@@ -255,6 +264,7 @@ h1 {
 .similar-card h3 a { color: inherit; text-decoration: none; }
 .similar-card h3 a:hover { color: #00affe; }
 
+/* Precios y botón carrito en tarjeta */
 .precio-carrito { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
 .precios { display: flex; flex-direction: column; }
 .precio-original { text-decoration: line-through; color: #888; font-size: 0.85rem; margin-bottom: 0.2rem; }
@@ -262,7 +272,7 @@ h1 {
 .btn-carrito { display: flex; align-items: center; justify-content: center; background-color: #0ea5e9; color: #fff; width: 36px; height: 36px; border-radius: 8px; font-size: 1rem; text-decoration: none; transition: all 0.3s ease; }
 .btn-carrito:hover { background-color: #10638a; transform: translateY(-2px); }
 
-/* Flechas */
+/* ================= FLECHAS DEL SLIDER ================= */
 .slider-arrow {
     background-color: #0ea5e9;
     color: #fff;
@@ -284,7 +294,7 @@ h1 {
 .slider-arrow.prev { margin-right: 1rem; }  /* no superpone con imagen */
 .slider-arrow.next { margin-left: 1rem; }  /* no superpone con imagen */
 
-/* Responsive */
+/* ================= RESPONSIVE SLIDER ================= */
 @media (max-width: 1200px) { .similar-card { flex: 0 0 calc(33.33% - 1rem); } }
 @media (max-width: 992px) { .similar-card { flex: 0 0 calc(50% - 0.75rem); } }
 @media (max-width: 600px) { .similar-card { flex: 0 0 100%; } }

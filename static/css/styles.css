@@ -1,4 +1,6 @@
-/* ================= FONT MODERNA ================= */
+/* ============================ */
+/*          FUENTES             */
+/* ============================ */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 body {
@@ -23,7 +25,9 @@ a:hover {
     color: #008fcc;
 }
 
-/* ================= NAVBAR ================= */
+/* ============================ */
+/*           NAVBAR             */
+/* ============================ */
 .navbar {
     position: relative;
     display: flex;
@@ -34,7 +38,6 @@ a:hover {
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* Logo centrado */
 .navbar-logo {
     position: absolute;
     top: 50%;
@@ -51,7 +54,6 @@ a:hover {
     100% { transform: translate(-50%, -50%) translateY(20px) scale(1); opacity: 1; }
 }
 
-/* Contenedores de los lados */
 .navbar-left,
 .navbar-right {
     display: flex;
@@ -103,7 +105,9 @@ a:hover {
     }
 }
 
-/* ================= CONTENEDOR GIGANTE ================= */
+/* ============================ */
+/*        CONTENEDOR LISTA      */
+/* ============================ */
 .lista-container {
     max-width: 1200px;
     margin: 3rem auto;
@@ -116,7 +120,9 @@ a:hover {
     animation: fadeInUp 0.5s forwards;
 }
 
-/* ================= FILTROS ================= */
+/* ============================ */
+/*           FILTROS            */
+/* ============================ */
 .filtros {
     display: flex;
     flex-wrap: wrap;
@@ -159,13 +165,17 @@ a:hover {
     animation: bounce 0.5s;
 }
 
-/* ================= ANIMACIONES ================= */
+/* ============================ */
+/*         ANIMACIONES           */
+/* ============================ */
 @keyframes fadeInUp {
     0% { opacity: 0; transform: translateY(20px); }
     100% { opacity: 1; transform: translateY(0); }
 }
 
-/* ================= GRID DE PRODUCTOS ================= */
+/* ============================ */
+/*         GRID PRODUCTOS        */
+/* ============================ */
 .productos-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -174,28 +184,20 @@ a:hover {
     transform: translateY(20px);
     animation: fadeInUp 0.6s forwards;
     animation-delay: 0.2s;
-
-    /* filas iguales según la card más alta */
     grid-auto-rows: 1fr;
 }
 
-/* Tablet */
+/* Responsive grid */
 @media (max-width: 992px) {
-    .productos-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-    }
+    .productos-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
 }
-
-/* Móvil */
 @media (max-width: 600px) {
-    .productos-grid {
-        grid-template-columns: 1fr !important;
-        gap: 1rem !important;
-    }
+    .productos-grid { grid-template-columns: 1fr !important; gap: 1rem !important; }
 }
 
-/* ================= CARD DE PRODUCTO ================= */
+/* ============================ */
+/*         CARD PRODUCTO         */
+/* ============================ */
 .producto-card,
 .similar-card {
     background: #ffffff;
@@ -205,12 +207,10 @@ a:hover {
     text-align: left;
     box-shadow: 0 4px 16px rgba(0,0,0,0.08);
     transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease;
-    
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* precio + carrito siempre abajo */
-    min-height: 450px; /* altura mínima uniforme */
-
+    justify-content: space-between;
+    min-height: 450px;
     position: relative;
 }
 
@@ -225,42 +225,31 @@ a:hover {
     width: 100%;
     height: 220px;
     object-fit: contain;
-    background: #ffffff;
     border-radius: 12px;
     margin-bottom: 1rem;
-    
 }
 
 .producto-card h3,
 .similar-card h3 {
     font-size: 1.2rem;
     color: #002035;
-    margin-bottom: 5rem; /* espacio entre título y mensaje/stock */
-    min-height: 2rem; /* asegura espacio aunque título sea corto */
+    margin-bottom: 5rem;
+    min-height: 2rem;
 }
 
 .producto-card h3 a,
-.similar-card h3 a {
-    color: inherit;
-    text-decoration: none;
-}
-
+.similar-card h3 a { color: inherit; text-decoration: none; }
 .producto-card h3 a:hover,
-.similar-card h3 a:hover {
-    color: #00affe;
-}
+.similar-card h3 a:hover { color: #00affe; }
 
-/* Contenedor de precio + carrito */
+/* Contenedor precio + carrito */
 .precio-carrito {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.precios {
-    display: flex;
-    flex-direction: column;
-}
+.precios { display: flex; flex-direction: column; }
 
 .precio-original {
     text-decoration: line-through;
@@ -275,7 +264,6 @@ a:hover {
     font-size: 1.6rem;
 }
 
-/* Botón carrito */
 .btn-carrito {
     display: flex;
     align-items: center;
@@ -288,53 +276,33 @@ a:hover {
     font-size: 1.2rem;
     transition: all 0.3s ease;
     text-decoration: none;
-    margin-top: auto; /* empuja botón al fondo */
+    margin-top: auto;
 }
 
-.btn-carrito:hover {
-    background-color: #10638a;
-    transform: translateY(-2px);
-    animation: bounce 0.5s;
-}
-
+.btn-carrito:hover { background-color: #10638a; transform: translateY(-2px); animation: bounce 0.5s; }
 .btn-carrito.disabled,
-.btn-carrito[disabled] {
-    background-color: #cccccc;
-    cursor: not-allowed;
-    transform: none;
-    color: #666666;
-}
+.btn-carrito[disabled] { background-color: #cccccc; cursor: not-allowed; transform: none; color: #666666; }
 
 /* Badges */
-.badge-ahorro {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #2ecc71;
-    color: #fff;
-    font-weight: bold;
-    padding: 5px 10px;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
-}
-
+.badge-ahorro,
 .badge.bg-danger {
     position: absolute;
     top: 10px;
-    left: 10px;
-    background-color: #e74c3c;
-    color: #fff;
     padding: 5px 10px;
     border-radius: 6px;
     font-size: 0.9rem;
+    color: #fff;
+    font-weight: bold;
     box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
 }
 
-/* Mensaje de stock bajo */
+.badge-ahorro { right: 10px; background: #2ecc71; }
+.badge.bg-danger { left: 10px; background-color: #e74c3c; }
+
+/* Mensaje stock bajo */
 .stock-bajo {
     display: block;
-    margin-bottom: 1rem; /* espacio debajo del mensaje */
+    margin-bottom: 1rem;
     color: #d97706;
     font-weight: 600;
     font-size: 0.95rem;
@@ -345,36 +313,29 @@ a:hover {
     box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
-
-/* ================= FOOTER NAVBAR ================= */
+/* ============================ */
+/*        FOOTER NAVBAR          */
+/* ============================ */
 .footer-navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #008fcc; /* mismo color que la navbar */
+    background-color: #008fcc;
     padding: 1rem 2rem;
     color: #fff;
     box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
     flex-wrap: wrap;
     gap: 1rem;
-    
 }
 
-.footer-left .footer-logo img {
-    height: 100px;
-    width: auto;
-}
+.footer-left .footer-logo img { height: 100px; width: auto; }
 
 .footer-center {
     flex: 1 1 500px;
     text-align: center;
     font-size: 0.95rem;
 }
-
-.footer-center p {
-    margin: 0;
-    line-height: 1.4rem;
-}
+.footer-center p { margin: 0; line-height: 1.4rem; }
 
 .footer-right .btn-github {
     display: inline-flex;
@@ -390,46 +351,19 @@ a:hover {
     text-decoration: none;
     transition: all 0.3s ease;
 }
+.footer-right .btn-github i { font-size: 1.2rem; }
+.footer-right .btn-github:hover { background-color: #555; transform: translateY(-2px); animation: bounce 0.5s; }
 
-.footer-right .btn-github i {
-    font-size: 1.2rem;
-}
-
-.footer-right .btn-github:hover {
-    background-color: #555;
-    transform: translateY(-2px);
-    animation: bounce 0.5s;
-}
-
-/* Responsive */
+/* Responsive Footer */
 @media (max-width: 992px) {
-    .footer-navbar {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-    .footer-center {
-        order: 2;
-    }
-
-    .footer-right {
-        order: 3;
-    }
+    .footer-navbar { flex-direction: column; align-items: center; text-align: center; }
+    .footer-center { order: 2; }
+    .footer-right { order: 3; }
 }
 
-/* ======== Layout general para footer pegado abajo ======== */
-html, body {
-    height: 100%; /* ocupa toda la pantalla */
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* asegura altura mínima de viewport */
-}
-
-main {
-    flex: 1; /* ocupa el espacio sobrante */
-    padding: 2rem; /* opcional, para que no quede pegado */
-}
+/* ============================ */
+/*     LAYOUT GENERAL BODY       */
+/* ============================ */
+html, body { height: 100%; }
+body { display: flex; flex-direction: column; min-height: 100vh; }
+main { flex: 1; padding: 2rem; }

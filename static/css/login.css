@@ -1,4 +1,4 @@
-/* === Contenedor === */
+/* ================= CONTENEDOR PRINCIPAL ================= */
 .login-container {
     display: flex;
     justify-content: center;
@@ -6,9 +6,20 @@
     min-height: 80vh;
     background: #f5f7fa;
     padding: 1rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s forwards;
 }
 
-/* === Card === */
+/* ================= ANIMACIÓN GENERAL ================= */
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================= TARJETA LOGIN ================= */
 .login-card {
     background: #fff;
     border-radius: 16px;
@@ -17,10 +28,9 @@
     max-width: 400px;
     box-shadow: 0 6px 24px rgba(0,0,0,0.1);
     text-align: center;
-    animation: fadeIn 0.6s ease forwards;
 }
 
-/* === Título === */
+/* ================= TÍTULO ================= */
 .login-title {
     font-size: 1.8rem;
     font-weight: 600;
@@ -28,7 +38,7 @@
     color: #333;
 }
 
-/* === Formulario === */
+/* ================= FORMULARIO ================= */
 .login-form {
     display: flex;
     flex-direction: column;
@@ -38,10 +48,10 @@
 
 .login-form input {
     width: 100%;
-    padding: 0.5rem 0.8rem; /* más pequeño para centrar texto */
+    padding: 0.5rem 0.8rem;
     border: 1px solid #ccc;
     border-radius: 8px;
-    font-size: 0.95rem; /* texto más pequeño */
+    font-size: 0.95rem;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     box-sizing: border-box;
 }
@@ -52,12 +62,12 @@
     box-shadow: 0 0 6px rgba(0,119,204,0.3);
 }
 
-/* === Botón === */
+/* ================= BOTÓN LOGIN ================= */
 .btn-login {
     background: #0077cc;
     color: #fff;
     font-size: 1rem;
-    padding: 0.7rem 0.8rem; /* más compacto */
+    padding: 0.7rem 0.8rem;
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -69,10 +79,10 @@
 
 .btn-login:hover {
     background: #005fa3;
-    transform: scale(1.05); /* efecto sutil al pasar el mouse */
+    transform: scale(1.05);
 }
 
-/* === Footer === */
+/* ================= FOOTER ================= */
 .login-footer {
     margin-top: 1.5rem;
     font-size: 0.95rem;
@@ -90,8 +100,18 @@
     text-decoration: underline;
 }
 
-/* === Animación === */
-@keyframes fadeIn {
-    0% { opacity: 0; transform: translateY(-20px); }
-    100% { opacity: 1; transform: translateY(0); }
+/* ================= RESPONSIVE ================= */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 2rem;
+    }
+
+    .login-title {
+        font-size: 1.6rem;
+    }
+
+    .btn-login {
+        font-size: 0.95rem;
+        padding: 0.6rem 0.8rem;
+    }
 }

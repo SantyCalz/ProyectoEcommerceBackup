@@ -1,4 +1,4 @@
-/* === Contenedor === */
+/* ================= CONTENEDOR PRINCIPAL ================= */
 .register-container {
     display: flex;
     justify-content: center;
@@ -8,7 +8,7 @@
     padding: 1rem;
 }
 
-/* === Card horizontal === */
+/* ================= CARD ================= */
 .register-card {
     background: #fff;
     border-radius: 16px;
@@ -19,7 +19,7 @@
     animation: fadeIn 0.6s ease forwards;
 }
 
-/* === Título === */
+/* ================= TÍTULO ================= */
 .register-title {
     font-size: 1.8rem;
     font-weight: 600;
@@ -28,7 +28,7 @@
     text-align: center;
 }
 
-/* === Formulario en grid === */
+/* ================= FORMULARIO ================= */
 .register-form .form-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -40,7 +40,7 @@
     grid-column: 1 / span 2;
 }
 
-/* Grupos de input */
+/* Grupo de inputs */
 .register-form .form-group {
     display: flex;
     flex-direction: column;
@@ -53,14 +53,23 @@
     border: 1px solid #ccc;
     font-size: 1rem;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
 }
 
 .register-form input:focus {
     border-color: #0077cc;
     box-shadow: 0 0 6px rgba(0,119,204,0.3);
+    outline: none;
 }
 
-/* Botón */
+/* Mensajes de error */
+.form-error {
+    color: #ff4d4f;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* ================= BOTÓN REGISTRARSE ================= */
 .btn-register {
     grid-column: 1 / span 2;
     margin: 1rem auto 0 auto;
@@ -71,16 +80,18 @@
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: background 0.3s ease, transform 0.2s ease;
     display: block;
     width: fit-content;
+    text-align: center;
 }
 
 .btn-register:hover {
     background: #005fa3;
+    transform: scale(1.05);
 }
 
-/* Footer */
+/* ================= FOOTER ================= */
 .register-footer {
     margin-top: 1.5rem;
     font-size: 0.95rem;
@@ -98,13 +109,13 @@
     text-decoration: underline;
 }
 
-/* Animación */
+/* ================= ANIMACIÓN ================= */
 @keyframes fadeIn {
     0% { opacity: 0; transform: translateY(-20px); }
     100% { opacity: 1; transform: translateY(0); }
 }
 
-/* === Ajustes específicos del grid para tu layout === */
+/* ================= AJUSTES ESPECÍFICOS DEL GRID ================= */
 .register-form .form-grid .form-group:nth-child(1) { grid-column: 1; } /* first_name */
 .register-form .form-grid .form-group:nth-child(2) { grid-column: 2; } /* last_name */
 .register-form .form-grid .form-group:nth-child(3) { grid-column: 1 / span 2; } /* email */
@@ -113,8 +124,14 @@
 .register-form .form-grid .form-group:nth-child(6) { grid-column: 1; } /* password1 */
 .register-form .form-grid .form-group:nth-child(7) { grid-column: 2; } /* password2 */
 
-.form-error {
-    color: #ff4d4f;
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .register-form .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .btn-register {
+        width: 100%;
+        text-align: center;
+    }
 }

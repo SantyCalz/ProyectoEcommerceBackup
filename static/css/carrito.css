@@ -1,4 +1,4 @@
-/* Card principal */
+/* ================= CARD PRINCIPAL ================= */
 .contenido-carrito {
     max-width: 1200px;
     margin: 2rem auto;
@@ -8,10 +8,10 @@
     box-shadow: 0 8px 32px rgba(0,0,0,0.07);
     opacity: 0;
     transform: translateY(20px);
-    animation: fadeInUp 0.5s forwards;
+    animation: fadeInUp 0.5s forwards; /* Animación de entrada */
 }
 
-/* Animación card */
+/* Animación de fade in + subida */
 @keyframes fadeInUp {
     to {
         opacity: 1;
@@ -19,13 +19,14 @@
     }
 }
 
-/* Tabla del carrito */
+/* ================= TABLA DEL CARRITO ================= */
 .carrito-tabla {
     width: 100%;
     border-collapse: collapse;
     margin-top: 1rem;
 }
 
+/* Celdas y encabezados de la tabla */
 .carrito-tabla th,
 .carrito-tabla td {
     padding: 0.75rem 1rem;
@@ -33,17 +34,17 @@
     vertical-align: middle;
     border-bottom: 1px solid #e5e7eb;
     font-size: 1rem;
-    transition: background-color 0.2s, transform 0.2s;
+    transition: background-color 0.2s, transform 0.2s; /* efecto hover */
 }
 
-/* Encabezados */
+/* Encabezados de la tabla */
 .carrito-tabla th {
     font-weight: 600;
     background-color: #f8fafc;
     color: #111;
 }
 
-/* Botones de acción + y - */
+/* ================= BOTONES DE ACCIÓN +, -, ELIMINAR ================= */
 .btn-carrito {
     display: inline-block;
     width: 28px;
@@ -64,6 +65,8 @@
     background-color: #10638a;
     transform: scale(1.05);
 }
+
+/* Botón sumar */
 .btn-carrito.sumar {
     background-color: #0ea5e9;
     color: #fff;
@@ -71,6 +74,8 @@
 .btn-carrito.sumar:hover {
     background-color: #10638a;
 }
+
+/* Botón restar */
 .btn-carrito.restar {
     background-color: #dc2626;
     color: #fff;
@@ -78,6 +83,8 @@
 .btn-carrito.restar:hover {
     background-color: #b91c1c;
 }
+
+/* Botón eliminar */
 .btn-carrito.eliminar {
     background-color: #dc2626;
     color: #fff;
@@ -86,13 +93,13 @@
     background-color: #b91c1c;
 }
 
-/* Hover fila */
+/* ================= EFECTO HOVER FILA ================= */
 .carrito-tabla tbody tr:hover {
     background-color: #f0f2f5;
     transform: scale(1.02);
 }
 
-/* Total y botones inferiores alineados a la derecha */
+/* ================= TOTAL Y BOTONES INFERIORES ================= */
 .total-botones-container {
     display: flex;
     flex-direction: column;
@@ -100,7 +107,7 @@
     margin-top: 1.5rem;
     opacity: 0;
     transform: translateY(20px);
-    animation: fadeInUp 0.5s 0.2s forwards;
+    animation: fadeInUp 0.5s 0.2s forwards; /* animación con retraso */
 }
 
 .total-botones-container p {
@@ -109,7 +116,7 @@
     margin-bottom: 1rem;
 }
 
-/* Botones inferiores */
+/* Contenedor de botones */
 .botones-carrito {
     display: flex;
     gap: 1rem;
@@ -130,7 +137,7 @@
     transform: scale(1.05);
 }
 
-/* Mensajes de stock */
+/* ================= MENSAJES DE STOCK ================= */
 .sin-stock {
     color: #dc2626;
     font-weight: 500;

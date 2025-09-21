@@ -1,4 +1,4 @@
-/* === Contenedor general === */
+/* ================= CONTENEDOR PRINCIPAL ================= */
 .mi-cuenta-container {
     display: flex;
     justify-content: center;
@@ -6,9 +6,20 @@
     min-height: 70vh;
     background: #f5f7fa;
     padding: 1rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s forwards;
 }
 
-/* === Card === */
+/* ================= ANIMACIÓN GENERAL ================= */
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================= TARJETA MI CUENTA ================= */
 .mi-cuenta-card {
     background: #ffffff;
     border-radius: 16px;
@@ -17,10 +28,9 @@
     max-width: 500px;
     box-shadow: 0 6px 24px rgba(0,0,0,0.1);
     text-align: center;
-    animation: fadeIn 0.6s ease forwards;
 }
 
-/* === Título === */
+/* ================= TÍTULO ================= */
 .mi-cuenta-title {
     font-size: 1.8rem;
     font-weight: 600;
@@ -28,7 +38,7 @@
     color: #333;
 }
 
-/* === Botones === */
+/* ================= BOTONES ================= */
 .mi-cuenta-botones {
     display: flex;
     flex-direction: column;
@@ -43,31 +53,18 @@
     padding: 0.8rem 1.2rem;
     border-radius: 8px;
     text-decoration: none;
+    font-weight: 500;
     transition: background 0.3s ease, transform 0.2s ease;
+    text-align: center;
+    cursor: pointer;
 }
 
 .btn-cuenta:hover {
     background: #10638a;
-    color: #fff;
     transform: translateY(-2px);
 }
 
-/* === Animación fade-in === */
-@keyframes fadeIn {
-    0% { opacity: 0; transform: translateY(-20px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
-
-
-
-
-
-
-
-
-
-
-/* Contenedor general */
+/* ================= HISTORIAL DE COMPRAS ================= */
 .historial-compras-container {
     display: flex;
     flex-direction: column;
@@ -75,9 +72,12 @@
     min-height: 80vh;
     padding: 2rem;
     background: #f5f7fa;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s 0.1s forwards;
 }
 
-/* Card principal */
+/* Título historial */
 .historial-compras-container h2 {
     margin-bottom: 1.5rem;
     color: #333;
@@ -85,7 +85,7 @@
     font-weight: 600;
 }
 
-/* Tabla */
+/* Tabla historial */
 .historial-compras-table {
     width: 100%;
     max-width: 900px;
@@ -125,7 +125,7 @@
     margin: 0.2rem 0;
 }
 
-/* Botón */
+/* Botón historial */
 .historial-compras-container .btn {
     background-color: #0ea5e9;
     color: #fff;
@@ -133,25 +133,34 @@
     border-radius: 8px;
     text-decoration: none;
     font-weight: 500;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+    cursor: pointer;
 }
 
 .historial-compras-container .btn:hover {
     background-color: #10638a;
-    color: #fff;
+    transform: translateY(-2px);
 }
 
-/* Responsive */
+/* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
     .historial-compras-table th,
     .historial-compras-table td {
         padding: 0.6rem;
         font-size: 0.9rem;
     }
+
+    .mi-cuenta-card {
+        padding: 2rem;
+    }
+
+    .mi-cuenta-title {
+        font-size: 1.6rem;
+    }
+
+    .btn-cuenta {
+        font-size: 0.95rem;
+        padding: 0.7rem 1rem;
+    }
 }
-
-
-
-
-
-

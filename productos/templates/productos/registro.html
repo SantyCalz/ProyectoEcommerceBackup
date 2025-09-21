@@ -6,12 +6,19 @@
 {% endblock %}
 
 {% block content %}
+<!-- Contenedor principal de registro -->
 <div class="register-container">
     <div class="register-card">
         <h2 class="register-title">Registro</h2>
+
+        <!-- Formulario de registro -->
         <form method="post" class="register-form">
             {% csrf_token %}
+
+            <!-- Grid para organizar los campos del formulario -->
             <div class="form-grid">
+
+                <!-- Nombre -->
                 <div class="form-group">
                     {{ form.first_name.label_tag }}
                     {{ form.first_name }}
@@ -19,6 +26,8 @@
                         <div class="form-error">{{ form.first_name.errors.0 }}</div>
                     {% endif %}
                 </div>
+
+                <!-- Apellido -->
                 <div class="form-group">
                     {{ form.last_name.label_tag }}
                     {{ form.last_name }}
@@ -27,6 +36,7 @@
                     {% endif %}
                 </div>
 
+                <!-- Email (ocupando todo el ancho) -->
                 <div class="form-group full-width">
                     {{ form.email.label_tag }}
                     {{ form.email }}
@@ -35,6 +45,7 @@
                     {% endif %}
                 </div>
 
+                <!-- Nombre de usuario -->
                 <div class="form-group">
                     {{ form.username.label_tag }}
                     {{ form.username }}
@@ -42,6 +53,8 @@
                         <div class="form-error">{{ form.username.errors.0 }}</div>
                     {% endif %}
                 </div>
+
+                <!-- Teléfono -->
                 <div class="form-group">
                     {{ form.telefono.label_tag }}
                     {{ form.telefono }}
@@ -50,6 +63,7 @@
                     {% endif %}
                 </div>
 
+                <!-- Contraseña -->
                 <div class="form-group">
                     {{ form.password1.label_tag }}
                     {{ form.password1 }}
@@ -57,6 +71,8 @@
                         <div class="form-error">{{ form.password1.errors.0 }}</div>
                     {% endif %}
                 </div>
+
+                <!-- Confirmar contraseña -->
                 <div class="form-group">
                     {{ form.password2.label_tag }}
                     {{ form.password2 }}
@@ -66,8 +82,11 @@
                 </div>
             </div>
 
+            <!-- Botón de enviar formulario -->
             <button type="submit" class="btn-register">Registrarse</button>
         </form>
+
+        <!-- Enlace al login -->
         <p class="register-footer">
             ¿Ya tenés cuenta? <a href="{% url 'login_usuario' %}">Iniciar sesión</a>
         </p>

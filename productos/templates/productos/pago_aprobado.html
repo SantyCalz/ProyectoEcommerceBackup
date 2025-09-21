@@ -1,25 +1,31 @@
 {% extends 'productos/base.html' %}
 {% load static %}
+
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/pago_aprobado.css' %}">
 
-<!-- Card principal -->
+<!-- ================= CARD PRINCIPAL ================= -->
 <div class="pago-card">
     <h1>Pago Aprobado</h1>
 
+    <!-- Explicación del proceso -->
     <p>Una vez que confirmes tu pago, se generará tu pedido, se descontará el stock y podrás descargar el PDF.</p>
 
+    <!-- Botón para confirmar el pago y generar el pedido -->
     <button id="confirmar-pago-btn">Confirmar Pago y Generar Pedido</button>
 
+    <!-- Mensajes dinámicos (éxito, error, procesando) -->
     <p id="mensaje"></p>
 
+    <!-- Link para descargar el PDF del pedido, oculto inicialmente -->
     <a id="link-pdf" href="#" target="_blank" style="display:none;">📄 Descargar PDF del pedido</a>
 </div>
 
-<!-- Link fuera de la card -->
+<!-- Link para volver a la tienda -->
 <a class="volver-tienda" href="{% url 'lista_productos' %}">Volver a la tienda</a>
 
 <script>
+/* ================= FUNCIONES AUXILIARES ================= */
 // Función para obtener CSRF token desde la cookie
 function getCookie(name) {
     let cookieValue = null;
@@ -41,27 +47,31 @@ const btn = document.getElementById('confirmar-pago-btn');
 const mensaje = document.getElementById('mensaje');
 const linkPDF = document.getElementById('link-pdf');
 
+/* ================= EVENTO CLICK DEL BOTÓN ================= */
 btn.addEventListener('click', async function() {
-    mensaje.textContent = "Procesando...";
+    mensaje.textContent = "Procesando..."; // Mostrar mensaje mientras se procesa
+
     try {
+        // Realizar petición POST para generar el pedido
         const response = await fetch("{% url 'pago_aprobado' %}", {
             method: 'POST',
             headers: {
-                'X-CSRFToken': csrftoken,
+                'X-CSRFToken': csrftoken,          // Token CSRF para seguridad
                 'X-Requested-With': 'XMLHttpRequest'
             }
         });
 
         const data = await response.json();
 
+        // Mostrar mensajes según el resultado
         if (data.status === 'ok') {
             mensaje.textContent = "✅ Pedido generado correctamente. Gracias por tu compra.";
             if (data.pdf_url) {
                 linkPDF.href = data.pdf_url;
-                linkPDF.style.display = 'inline-block';
+                linkPDF.style.display = 'inline-block'; // Mostrar link al PDF
             }
         } else {
-            mensaje.textContent = "❌ " + data.message;
+            mensaje.textContent = "❌ " + data.message; // Error enviado por el servidor
         }
     } catch (err) {
         console.error("Error en fetch:", err);

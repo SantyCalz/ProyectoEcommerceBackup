@@ -9,11 +9,24 @@
 <div class="login-container">
     <div class="login-card">
         <h2 class="login-title">Login</h2>
+
+        <!-- Mostrar mensajes de error o información al usuario -->
+        {% if messages %}
+            <div class="login-messages">
+                {% for message in messages %}
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Formulario de login -->
         <form method="post" class="login-form">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn-login">Entrar</button>
         </form>
+
+        <!-- Enlace a registro si no tiene cuenta -->
         <p class="login-footer">
             ¿No tenés cuenta? <a href="{% url 'registro' %}">Registrarse</a>
         </p>

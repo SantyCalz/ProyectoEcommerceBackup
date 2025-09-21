@@ -1,49 +1,68 @@
+# ======================================================
+# Imports necesarios
+# ======================================================
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, logout, update_session_auth_hash
-from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
-from .models import Producto, Carrito, CarritoProducto, Categoria, Pedido, PedidoProducto
-from .forms import RegistroForm, UsuarioChangeForm
+from django.contrib.auth import login, logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.http import HttpResponse, JsonResponse
+from django.utils import timezone
+import io
 import mercadopago
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
+
+from .models import Producto, Carrito, CarritoProducto, Categoria, Pedido, PedidoProducto
+from .forms import RegistroForm
 from django.conf import settings
-from django.http import HttpResponse
 
 
-# Vista principal de "Mi Cuenta"
+# ======================================================
+# Vistas de usuario / cuenta
+# ======================================================
+
 @login_required
 def mi_cuenta(request):
+    """Página principal del área de usuario 'Mi Cuenta'"""
     return render(request, 'productos/mi_cuenta.html')
 
 
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-
 @login_required
 def ver_datos_usuario(request):
+    """Vista para ver y editar datos del usuario"""
     user = request.user
     return render(request, 'productos/ver_datos_usuario.html', {'user': user})
 
 
-
-# Vista para historial de compras
 @login_required
 def historial_compras(request):
+    """Muestra los pedidos realizados por el usuario"""
     pedidos = request.user.pedido_set.order_by('-fecha').all()
     return render(request, 'productos/historial_compras.html', {'pedidos': pedidos})
 
 
+# ======================================================
+# Vistas de productos
+# ======================================================
+
 def detalle_producto(request, producto_id):
+    """Detalle de un producto y productos similares"""
     producto = get_object_or_404(Producto, id=producto_id)
-    productos_similares = Producto.objects.filter(categoria=producto.categoria).exclude(id=producto.id)[:8]
+    productos_similares = Producto.objects.filter(
+        categoria=producto.categoria
+    ).exclude(id=producto.id)[:8]
     return render(request, 'productos/detalle_producto.html', {
         'producto': producto,
         'productos_similares': productos_similares,
     })
 
 
-
 def lista_productos(request):
+    """Listado de productos con filtrado por búsqueda o categoría"""
     query = request.GET.get('q')
     categoria_id = request.GET.get('categoria')
 
@@ -64,14 +83,19 @@ def lista_productos(request):
     })
 
 
+# ======================================================
+# Vistas de carrito
+# ======================================================
+
 @login_required
 def agregar_al_carrito(request, producto_id):
+    """Agrega un producto al carrito"""
     producto = get_object_or_404(Producto, id=producto_id)
 
     if producto.stock <= 0:
-        return redirect('lista_productos')  # Si no hay stock, vuelve a la lista de productos
+        return redirect('lista_productos')  # Sin stock, vuelve a la lista
 
-    carrito, created = Carrito.objects.get_or_create(usuario=request.user)
+    carrito, _ = Carrito.objects.get_or_create(usuario=request.user)
     carrito_producto, created = CarritoProducto.objects.get_or_create(
         carrito=carrito,
         producto=producto
@@ -80,25 +104,23 @@ def agregar_al_carrito(request, producto_id):
         if carrito_producto.cantidad < producto.stock:
             carrito_producto.cantidad += 1
             carrito_producto.save()
-    
-    # ← Quitamos el redirect al carrito
-    # return redirect('ver_carrito')
 
-    # En su lugar, podemos volver a la página anterior:
+    # Redirige a la página anterior o lista de productos
     return redirect(request.META.get('HTTP_REFERER', 'lista_productos'))
-
 
 
 @login_required
 def ver_carrito(request):
-    carrito, created = Carrito.objects.get_or_create(usuario=request.user)
+    """Vista del carrito del usuario"""
+    carrito, _ = Carrito.objects.get_or_create(usuario=request.user)
     total = carrito.total()
     return render(request, 'productos/carrito.html', {'carrito': carrito, 'total': total})
 
 
 @login_required
 def eliminar_del_carrito(request, producto_id):
-    carrito, created = Carrito.objects.get_or_create(usuario=request.user)
+    """Elimina o reduce la cantidad de un producto en el carrito"""
+    carrito, _ = Carrito.objects.get_or_create(usuario=request.user)
     producto = get_object_or_404(Producto, id=producto_id)
     item = CarritoProducto.objects.filter(carrito=carrito, producto=producto).first()
 
@@ -107,55 +129,40 @@ def eliminar_del_carrito(request, producto_id):
             item.cantidad -= 1
             item.save()
         else:
-            # Si queda 1 y se disminuye, eliminar del carrito
             item.delete()
-    
+
     return redirect('ver_carrito')
 
 
 @login_required
 def vaciar_carrito(request):
-    carrito, created = Carrito.objects.get_or_create(usuario=request.user)
+    """Vacía todos los productos del carrito"""
+    carrito, _ = Carrito.objects.get_or_create(usuario=request.user)
     carrito.carritoproducto_set.all().delete()
     return redirect('ver_carrito')
 
 
-
-
-from django.http import JsonResponse
-from django.views.decorators.http import require_POST
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
-from django.contrib.auth.decorators import login_required
-from .models import Carrito, Pedido, PedidoProducto, Producto
-
-from django.shortcuts import render, redirect
-from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
-from .models import Carrito, Pedido, PedidoProducto, Producto
+# ======================================================
+# Vistas de checkout y pago
+# ======================================================
 
 @login_required
 def checkout(request):
+    """Vista de checkout y creación de preferencia de pago con Mercado Pago"""
     carrito, _ = Carrito.objects.get_or_create(usuario=request.user)
     total = carrito.total()
 
     if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         direccion = request.POST.get('direccion', '')
-
-        # Guardar la dirección en session para usarla luego
         request.session['direccion_envio'] = direccion
 
-        # Inicializar SDK de Mercado Pago
         sdk = mercadopago.SDK(settings.MP_ACCESS_TOKEN)
-
-        # Armar items según el carrito
-        items = []
-        for item in carrito.carritoproducto_set.all():
-            items.append({
-                "title": item.producto.nombre,
-                "quantity": item.cantidad,
-                "unit_price": float(item.producto.precio),
-                "currency_id": "ARS",
-            })
+        items = [{
+            "title": item.producto.nombre,
+            "quantity": item.cantidad,
+            "unit_price": float(item.producto.precio),
+            "currency_id": "ARS",
+        } for item in carrito.carritoproducto_set.all()]
 
         preference_data = {
             "items": items,
@@ -165,18 +172,11 @@ def checkout(request):
                 "failure": request.build_absolute_uri("/checkout/failure/"),
                 "pending": request.build_absolute_uri("/checkout/pending/"),
             },
-            # "auto_return": "approved",
         }
 
         try:
             preference_response = sdk.preference().create(preference_data)
             preference = preference_response.get("response", {})
-
-            print("=== Respuesta completa de Mercado Pago ===")
-            print(preference_response)
-            print("=== URL sandbox que se intentará enviar al frontend ===")
-            print(preference.get("sandbox_init_point"))
-
             url = preference.get("sandbox_init_point")
             if not url:
                 return HttpResponse("Error")
@@ -188,38 +188,18 @@ def checkout(request):
     return render(request, 'productos/checkout.html', {'carrito': carrito, 'total': total})
 
 
-from django.http import HttpResponse
-from reportlab.pdfgen import canvas
-
-from django.shortcuts import render
-from django.http import JsonResponse, HttpResponse
-from django.contrib.auth.decorators import login_required
-from .models import Carrito, Pedido, PedidoProducto, Producto
-from reportlab.pdfgen import canvas
-import io
-
-from reportlab.lib.pagesizes import A4
-from reportlab.lib import colors
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
-from reportlab.lib.styles import getSampleStyleSheet
-import io
-from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
-from .models import Carrito, Pedido, PedidoProducto
-
-from django.utils import timezone
-
 @login_required
 def pago_aprobado(request):
+    """Procesa el pago aprobado, genera pedido y PDF de factura"""
     carrito, _ = Carrito.objects.get_or_create(usuario=request.user)
-    direccion = request.session.get('direccion_envio', '')  # Tomamos la dirección de la session
+    direccion = request.session.get('direccion_envio', '')
 
     if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         try:
             if not carrito.carritoproducto_set.exists():
                 return JsonResponse({'status': 'error', 'message': 'No hay productos en el carrito.'})
 
-            # 1️⃣ Crear pedido en DB
+            # Crear pedido
             pedido = Pedido.objects.create(
                 usuario=request.user,
                 total=carrito.total(),
@@ -227,7 +207,7 @@ def pago_aprobado(request):
                 direccion_envio=direccion
             )
 
-            # 2️⃣ Crear items del pedido y descontar stock
+            # Crear items y descontar stock
             for item in carrito.carritoproducto_set.all():
                 PedidoProducto.objects.create(
                     pedido=pedido,
@@ -241,35 +221,27 @@ def pago_aprobado(request):
                     producto.stock = 0
                 producto.save()
 
-            # 3️⃣ Vaciar carrito
+            # Vaciar carrito
             carrito.carritoproducto_set.all().delete()
+            request.session.pop('direccion_envio', None)
 
-            # 4️⃣ Limpiar dirección de la session
-            if 'direccion_envio' in request.session:
-                del request.session['direccion_envio']
-
-            # 5️⃣ Generar PDF tipo factura
+            # Generar PDF de factura
             buffer = io.BytesIO()
             doc = SimpleDocTemplate(buffer, pagesize=A4)
             elements = []
             styles = getSampleStyleSheet()
 
-            # Obtener fecha local
             fecha_local = timezone.localtime(pedido.fecha)
             fecha_str = fecha_local.strftime("%d/%m/%Y %H:%M")
 
-            # Título
             elements.append(Paragraph(f"Factura - Pedido #{pedido.numero_pedido_formateado()}", styles['Title']))
             elements.append(Spacer(1, 12))
-
-            # Datos del cliente
             elements.append(Paragraph(f"<b>Cliente:</b> {pedido.usuario.first_name} {pedido.usuario.last_name}", styles['Normal']))
             elements.append(Paragraph(f"<b>Email:</b> {pedido.usuario.email}", styles['Normal']))
             elements.append(Paragraph(f"<b>Dirección:</b> {pedido.direccion_envio}", styles['Normal']))
-            elements.append(Paragraph(f"<b>Fecha:</b> {fecha_str}", styles['Normal']))  # <-- Hora local
+            elements.append(Paragraph(f"<b>Fecha:</b> {fecha_str}", styles['Normal']))
             elements.append(Spacer(1, 12))
 
-            # Tabla de productos
             data = [['Producto', 'Cantidad', 'Precio Unitario', 'Subtotal']]
             for item in pedido.pedidoproducto_set.all():
                 subtotal = item.cantidad * item.precio_unitario
@@ -293,12 +265,10 @@ def pago_aprobado(request):
             doc.build(elements)
             buffer.seek(0)
 
-            # Guardar PDF en media/pedidos
             pdf_filename = f"pedido_{pedido.numero_pedido_formateado()}.pdf"
             with open(f"static/media/pedidos/{pdf_filename}", "wb") as f:
                 f.write(buffer.getbuffer())
 
-            # 6️⃣ Devolver JSON con éxito y link al PDF
             return JsonResponse({
                 'status': 'ok',
                 'message': 'Pedido generado correctamente.',
@@ -309,13 +279,12 @@ def pago_aprobado(request):
             print("Error en pago_aprobado:", e)
             return JsonResponse({'status': 'error', 'message': 'Ocurrió un error al generar el pedido. Intenta nuevamente.'})
 
-    # GET → mostrar la página con botón
     return render(request, "productos/pago_aprobado.html", {'carrito': carrito})
-
 
 
 @login_required
 def checkout_success_manual(request):
+    """Simula un checkout exitoso manual, genera pedido y descuenta stock"""
     carrito, _ = Carrito.objects.get_or_create(usuario=request.user)
 
     if not carrito.carritoproducto_set.exists():
@@ -336,44 +305,43 @@ def checkout_success_manual(request):
         producto.save()
 
     carrito.carritoproducto_set.all().delete()
-
     return render(request, "productos/checkout_success.html")
 
 
-    # Vaciar carrito
-    carrito.carritoproducto_set.all().delete()
-
-    # Redirigir a la página principal de la tienda
-    return redirect('lista_productos')
-
 @login_required
 def checkout_failure(request):
+    """Vista para checkout fallido"""
     return render(request, "productos/checkout_failure.html")
 
 
 @login_required
 def checkout_pending(request):
-    # Si querés, podés guardar que el pago está en estado "pendiente"
+    """Vista para checkout pendiente"""
     return render(request, "productos/checkout_pending.html")
 
 
+# ======================================================
+# Registro y login de usuarios
+# ======================================================
+
 def registro(request):
+    """Registro de usuario desde frontend"""
     if request.method == "POST":
         form = RegistroForm(request.POST)
         if form.is_valid():
-            usuario = form.save()  # Guarda el usuario en la DB con la contraseña hasheada
-            login(request, usuario)  # Loguea automáticamente al usuario
-            return redirect('lista_productos')  # Redirige después del registro
+            usuario = form.save()
+            login(request, usuario)
+            return redirect('lista_productos')
         else:
-            print(form.errors)  # Esto ayuda a depurar errores del form
+            print(form.errors)
     else:
         form = RegistroForm()
     
     return render(request, 'productos/registro.html', {'form': form})
 
 
-
 def login_usuario(request):
+    """Login de usuario"""
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -387,11 +355,13 @@ def login_usuario(request):
 
 @login_required
 def logout_usuario(request):
+    """Logout de usuario"""
     logout(request)
     return redirect('login_usuario')
 
 
 @login_required
 def historial_pedidos(request):
+    """Otra vista para historial de pedidos (posible duplicado con historial_compras)"""
     pedidos = Pedido.objects.filter(usuario=request.user).order_by('-fecha')
     return render(request, 'productos/historial.html', {'pedidos': pedidos})

@@ -1,9 +1,9 @@
-/* Card principal */
+/* ================= CARD PRINCIPAL ================= */
 .pago-card {
     max-width: 400px;
     margin: 3rem auto;
     padding: 1.5rem;
-    background-color: #fff; /* card blanca */
+    background-color: #fff;
     border-radius: 16px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.08);
     text-align: center;
@@ -12,7 +12,7 @@
     animation: fadeInUp 0.5s forwards;
 }
 
-/* Animación general */
+/* ================= ANIMACIÓN GENERAL ================= */
 @keyframes fadeInUp {
     to {
         opacity: 1;
@@ -20,21 +20,22 @@
     }
 }
 
-/* Título */
+/* ================= TÍTULO ================= */
 .pago-card h1 {
     margin-bottom: 1rem;
     font-size: 1.8rem;
     color: #111;
 }
 
-/* Texto descriptivo */
+/* ================= TEXTO DESCRIPTIVO ================= */
 .pago-card p {
     font-size: 1rem;
     color: #333;
     margin-bottom: 1.5rem;
+    line-height: 1.5;
 }
 
-/* Botón confirmar */
+/* ================= BOTÓN CONFIRMAR PAGO ================= */
 #confirmar-pago-btn {
     padding: 0.8rem 1.5rem;
     border-radius: 10px;
@@ -52,14 +53,15 @@
     transform: scale(1.05);
 }
 
-/* Mensaje de estado */
+/* ================= MENSAJE DE ESTADO ================= */
 #mensaje {
     margin-top: 1rem;
     font-size: 1rem;
     font-weight: 500;
+    color: #111;
 }
 
-/* Link PDF dentro de la card */
+/* ================= LINK PDF ================= */
 #link-pdf {
     display: inline-block;
     margin-top: 1rem;
@@ -77,7 +79,7 @@
     transform: scale(1.05);
 }
 
-/* Link volver a la tienda fuera de la card */
+/* ================= LINK VOLVER A LA TIENDA ================= */
 .volver-tienda {
     display: block;
     margin: 2rem auto 3rem auto;
@@ -89,13 +91,14 @@
     padding: 0;
     text-align: center;
     max-width: 140px;
+    cursor: pointer;
 }
 
 .volver-tienda:hover {
     color: #10638a;
 }
 
-/* Responsive */
+/* ================= RESPONSIVE ================= */
 @media (max-width: 600px) {
     .pago-card {
         margin: 2rem 1rem;

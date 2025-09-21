@@ -1,9 +1,11 @@
 {% extends 'productos/base.html' %}
 {% load static %}
 
-{% block content %}
+{% block head %}
 <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+{% endblock %}
 
+{% block content %}
 {% if carrito.carritoproducto_set.exists %}
 <div class="checkout-card">
     <h1>Checkout</h1>
@@ -44,19 +46,23 @@
 <div class="checkout-form-container">
     <form id="checkout-form" method="post" action="{% url 'checkout' %}">
         {% csrf_token %}
-        <input type="text" name="direccion" id="direccion" placeholder="Dirección" required style="max-width: 300px; margin: 0 auto; display: block;">
-        <div class="form-botones" style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;">
-            <a href="{% url 'ver_carrito' %}" class="btn-volver" style="height: 44px; display: flex; align-items: center;">Volver al carrito</a>
-            <button type="submit" class="btn-finalizar" style="height: 44px;">Finalizar Compra</button>
+        <input type="text" name="direccion" id="direccion" placeholder="Dirección" required>
+        <div class="form-botones">
+            <a href="{% url 'ver_carrito' %}" class="btn-volver">Volver al carrito</a>
+            <button type="submit" class="btn-finalizar">Finalizar Compra</button>
         </div>
+        <div id="checkout-mensaje" class="checkout-mensaje"></div>
     </form>
 </div>
 
 <script>
 const form = document.getElementById('checkout-form');
+const mensajeDiv = document.getElementById('checkout-mensaje');
 
 form.addEventListener('submit', async function(e) {
     e.preventDefault();
+    mensajeDiv.textContent = "Procesando tu pedido...";
+    mensajeDiv.style.color = "blue";
 
     const formData = new FormData(form);
 
@@ -70,15 +76,18 @@ form.addEventListener('submit', async function(e) {
         const url = await response.text();
 
         if (url.startsWith('http')) {
+            mensajeDiv.textContent = "Redirigiendo al pago...";
             window.open(url, '_blank');
             window.location.href = "{% url 'pago_aprobado' %}";
         } else {
-            alert('No se pudo generar la preferencia de pago. Intenta de nuevo.');
+            mensajeDiv.textContent = "No se pudo generar la preferencia de pago. Intenta de nuevo.";
+            mensajeDiv.style.color = "red";
         }
 
     } catch (err) {
         console.error("Error en fetch:", err);
-        alert("Ocurrió un error inesperado al generar el link de pago.");
+        mensajeDiv.textContent = "Ocurrió un error inesperado al generar el link de pago.";
+        mensajeDiv.style.color = "red";
     }
 });
 </script>
@@ -87,5 +96,4 @@ form.addEventListener('submit', async function(e) {
 <p>No hay productos en el carrito.</p>
 <a href="{% url 'lista_productos' %}" class="botones-carrito">Volver a la tienda</a>
 {% endif %}
-
 {% endblock %}
