@@ -1,4 +1,3 @@
-
 /* === Contenedor === */
 .register-container {
     display: flex;
@@ -32,19 +31,22 @@
 /* === Formulario en grid === */
 .register-form .form-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.2rem 1.5rem;
 }
 
+/* Campos que ocupan las dos columnas */
+.register-form .form-group.full-width {
+    grid-column: 1 / span 2;
+}
+
+/* Grupos de input */
 .register-form .form-group {
     display: flex;
     flex-direction: column;
 }
 
-.register-form .form-group.full-width {
-    grid-column: 1 / span 2;
-}
-
+/* Inputs */
 .register-form input {
     padding: 0.8rem 1rem;
     border-radius: 8px;
@@ -58,25 +60,27 @@
     box-shadow: 0 0 6px rgba(0,119,204,0.3);
 }
 
-/* === Botón === */
+/* Botón */
 .btn-register {
     grid-column: 1 / span 2;
-    margin-top: 1rem;
+    margin: 1rem auto 0 auto;
     background: #0077cc;
     color: #fff;
     font-size: 1rem;
-    padding: 0.8rem;
+    padding: 0.8rem 2rem;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     transition: background 0.3s ease;
+    display: block;
+    width: fit-content;
 }
 
 .btn-register:hover {
     background: #005fa3;
 }
 
-/* === Footer === */
+/* Footer */
 .register-footer {
     margin-top: 1.5rem;
     font-size: 0.95rem;
@@ -94,8 +98,23 @@
     text-decoration: underline;
 }
 
-/* === Animación === */
+/* Animación */
 @keyframes fadeIn {
     0% { opacity: 0; transform: translateY(-20px); }
     100% { opacity: 1; transform: translateY(0); }
+}
+
+/* === Ajustes específicos del grid para tu layout === */
+.register-form .form-grid .form-group:nth-child(1) { grid-column: 1; } /* first_name */
+.register-form .form-grid .form-group:nth-child(2) { grid-column: 2; } /* last_name */
+.register-form .form-grid .form-group:nth-child(3) { grid-column: 1 / span 2; } /* email */
+.register-form .form-grid .form-group:nth-child(4) { grid-column: 1; } /* username */
+.register-form .form-grid .form-group:nth-child(5) { grid-column: 2; } /* telefono */
+.register-form .form-grid .form-group:nth-child(6) { grid-column: 1; } /* password1 */
+.register-form .form-grid .form-group:nth-child(7) { grid-column: 2; } /* password2 */
+
+.form-error {
+    color: #ff4d4f;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
 }

@@ -15,7 +15,7 @@ urlpatterns = [
 
 
     path('mi_cuenta/', views.mi_cuenta, name='mi_cuenta'),
-    path('mi_cuenta/editar/', views.editar_datos_usuario, name='editar_datos_usuario'),
+    path('mi_cuenta/editar/', views.ver_datos_usuario, name='editar_datos_usuario'),
     path('mi_cuenta/historial/', views.historial_compras, name='historial_compras'),
     path("checkout/success/manual/", views.checkout_success_manual, name="checkout_success_manual"),
     path("checkout/failure/", views.checkout_failure, name="checkout_failure"),

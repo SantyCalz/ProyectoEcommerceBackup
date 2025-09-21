@@ -16,22 +16,14 @@ def mi_cuenta(request):
     return render(request, 'productos/mi_cuenta.html')
 
 
-# Vista para editar datos del usuario
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
 @login_required
-def editar_datos_usuario(request):
+def ver_datos_usuario(request):
     user = request.user
-    if request.method == 'POST':
-        form = UsuarioChangeForm(request.POST, instance=user)
-        password_form = PasswordChangeForm(user, request.POST)
-        if form.is_valid() and password_form.is_valid():
-            form.save()
-            user = password_form.save()
-            update_session_auth_hash(request, user)
-            return redirect('mi_cuenta')
-    else:
-        form = UsuarioChangeForm(instance=user)
-        password_form = PasswordChangeForm(user)
-    return render(request, 'productos/editar_datos_usuario.html', {'form': form, 'password_form': password_form})
+    return render(request, 'productos/ver_datos_usuario.html', {'user': user})
+
 
 
 # Vista para historial de compras
@@ -366,15 +358,19 @@ def checkout_pending(request):
 
 
 def registro(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = RegistroForm(request.POST)
         if form.is_valid():
-            usuario = form.save()
-            login(request, usuario)
-            return redirect('lista_productos')
+            usuario = form.save()  # Guarda el usuario en la DB con la contraseña hasheada
+            login(request, usuario)  # Loguea automáticamente al usuario
+            return redirect('lista_productos')  # Redirige después del registro
+        else:
+            print(form.errors)  # Esto ayuda a depurar errores del form
     else:
         form = RegistroForm()
+    
     return render(request, 'productos/registro.html', {'form': form})
+
 
 
 def login_usuario(request):
